@@ -8,6 +8,7 @@
 
     <link rel="stylesheet"
           href="{{ url_for('static', filename='style.css') }}">
+          {% block head %}{% endblock %}
 </head>
 
 <body>
@@ -19,7 +20,7 @@
 <li><a href="{{ url_for('internet_history_ai') }}">Internet History (AI)</a></li>
 <li><a href="{{ url_for('web_history_ai') }}">Web History (AI)</a></li>
 </nav>
-        <h1>Web Programming Portfolio — Your Name: Mirla Tatiana YOUNES</h1>
+        <h1>Web Programming Portfolio — Mirla Tatiana Younes</h1>
         <p>A live site that grows one page or feature every week.</p>
     </header>
 

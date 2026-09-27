@@ -1,0 +1,177 @@
+form {
+    max-width: 800px;
+    margin: 30px auto;
+    padding: 20px;
+}
+
+.profile-layout {
+    display: flex;
+    max-width: 1100px;
+    margin: 40px auto;
+    background: #fffdf9;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+}
+
+.form-sidebar {
+    width: 260px;
+    background: #b7c99a;
+    padding: 30px 20px;
+}
+
+.form-content {
+    flex: 1;
+    padding: 35px;
+}
+
+.form-sidebar h3 {
+    margin-top: 0;
+    color: #4f6b45;
+    font-size: 24px;
+}
+
+.step {
+    margin: 14px 0;
+    padding: 12px 14px;
+    border-radius: 14px;
+    color: #5b6b55;
+}
+
+.step.active {
+    background: #d98fa3;
+    color: white;
+    font-weight: bold;
+}
+
+fieldset {
+    border: none;
+    background: #fdf4f6;
+    padding: 20px;
+    margin-bottom: 22px;
+    border-radius: 18px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+legend {
+    color: #5f7652;
+    font-weight: bold;
+    font-size: 18px;
+    padding: 0 8px;
+}
+
+input,
+select,
+textarea {
+    width: 100%;
+    padding: 11px 13px;
+    margin-top: 6px;
+    margin-bottom: 14px;
+    border: 1px solid #d7d7d7;
+    border-radius: 12px;
+    box-sizing: border-box;
+    font-size: 15px;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    border-color: #a8c98f;
+    box-shadow: 0 0 0 3px rgba(168, 201, 143, 0.25);
+}
+
+label {
+    display: block;
+    margin-top: 10px;
+    color: #5f7652;
+    font-weight: 600;
+}
+
+button,
+input[type="submit"],
+input[type="reset"] {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+input[type="submit"] {
+    background: #a8c98f;
+    color: white;
+}
+
+input[type="reset"] {
+    background: #f6c7d3;
+    color: #7a3f50;
+}
+
+input[type="radio"],
+input[type="checkbox"] {
+    width: auto;
+    margin-right: 8px;
+    margin-bottom: 0;
+}
+
+input[type="radio"] + label,
+input[type="checkbox"] + label {
+    display: inline;
+    margin-top: 0;
+    margin-right: 18px;
+}
+
+.form-content h2 {
+    color: #5f7652;
+    margin-top: 0;
+    font-size: 28px;
+}
+
+.form-content > p {
+    color: #7a6f73;
+    margin-bottom: 25px;
+    line-height: 1.6;
+}
+
+button[type="submit"] {
+    background: #8faa72;
+    color: white;
+}
+
+button[type="reset"] {
+    background: #d98fa3;
+    color: white;
+}
+
+button[type="submit"]:hover {
+    background: #78965d;
+}
+
+button[type="reset"]:hover {
+    background: #c9778f;
+}
+
+#confirmation {
+    margin-top: 10px;
+}
+
+#confirmation + label {
+    color: #7a3f50;
+    font-weight: 600;
+}
+
+@media (max-width: 800px) {
+    .profile-layout {
+        flex-direction: column;
+    }
+
+    .form-sidebar {
+        width: auto;
+    }
+
+    .form-content {
+        padding: 20px;
+    }
+}

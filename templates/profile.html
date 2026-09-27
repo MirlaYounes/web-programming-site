@@ -1,0 +1,71 @@
+{% extends "base.html" %} {% block title %}{{ data.get('fullname', 'Student Profile') }} — Profile{% endblock %} {# PROVIDED BY THE INSTRUCTOR — do not edit. Shows the Engineering Student Profile built from the submitted form. Extends base.html, so it appears in the student's own design (their style.css). Reads the exact field `name` values from the profile form; `skills` and `software` arrive as lists. #} {% block head %} {% endblock %} {% block content %}
+{{ data.get('fullname') }}
+{% if data.get('major') %}
+{{ data.get('major') | title }} Engineering
+
+{% endif %}
+{% if data.get('student_id') %}🎓 {{ data.get('student_id') }}{% endif %} {% if data.get('email') %}✉ {{ data.get('email') }}{% endif %} {% if data.get('phone') %}☎ {{ data.get('phone') }}{% endif %} {% if data.get('birthdate') %}🎂 {{ data.get('birthdate') }}{% endif %}
+
+{% if data.get('portfolio') %}🐙 GitHub{% endif %} {% if data.get('gin446') %}🔗 GIN446 site{% endif %}
+
+Academic Information
+{% if data.get('major') %}
+Major
+{{ data.get('major') | title }} Engineering
+{% endif %} {% if data.get('gpa') %}
+GPA
+{{ data.get('gpa') }} / 100
+{% endif %} {% if data.get('credits') %}
+Credits completed
+{{ data.get('credits') }} / 148
+{% endif %} {% if data.get('graduation') %}
+Expected graduation
+{{ data.get('graduation') | title }}{% if data.get('graduation_month') %} — {{ data.get('graduation_month') }}{% endif %}
+{% endif %} {% if data.get('internship_completed') %}
+Internship completed
+{{ data.get('internship_completed') | title }}
+{% endif %}
+Technical Background {% if skills %}
+Areas of experience
+
+{% for s in skills %}
+{{ s | replace('-', ' ') | title }}
+{% endfor %}
+{% endif %} {% if data.get('language') %}
+Primary programming language: {{ data.get('language') }}
+
+{% endif %} {% if software %}
+Engineering software
+
+{% for sw in software %}
+{{ sw | title }}
+{% endfor %}
+{% endif %}
+Final Year Project
+{% if data.get('project_title') %}
+Title
+{{ data.get('project_title') }}
+{% endif %} {% if data.get('project_area') %}
+Area
+{{ data.get('project_area') | replace('-', ' ') | title }}
+{% endif %} {% if data.get('team_size') %}
+Preferred team size
+{{ data.get('team_size') }}
+{% endif %} {% if data.get('meeting_date') %}
+Preferred meeting
+{{ data.get('meeting_date') }}{% if data.get('meeting_time') %} at {{ data.get('meeting_time') }}{% endif %}
+{% endif %} {% if data.get('project_color') %}
+Dashboard colour
+ {{ data.get('project_color') }}
+{% endif %}
+{% if data.get('description') %}
+Description
+
+{{ data.get('description') }}
+
+{% endif %}
+{% if data.get('form_version') %}
+Form version {{ data.get('form_version') }} — edit and resubmit
+
+{% endif %}
+{% endblock %}
