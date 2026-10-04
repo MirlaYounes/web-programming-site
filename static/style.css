@@ -140,3 +140,21 @@ main section li {
         padding: 2rem 3rem;
     }
 }
+@media (min-width: 1024px) {
+    header {
+        padding: 3rem 4rem;
+    }
+
+    main {
+        max-width: 1200px;
+        padding: 3rem 4rem;
+    }
+
+    nav {
+        padding: 1.5rem 4rem;
+    }
+
+    footer {
+        padding: 2.5rem 4rem;
+    }
+}

@@ -1,16 +1,22 @@
 {% extends "base.html" %}
 
 {% block title %}
-Web History (1989–1995)
+Web History (1989–Present)
 {% endblock %}
 
 {% block content %}
 
     <header>
         <h1>The Evolution of the World Wide Web</h1>
-        <p>Key developments in the creation, open release, and standardization of the WWW from 1989 to 1995.</p>
+        <p>Key developments in the creation, open release, and standardization of the WWW from 1989 to present.</p>
     </header>
+<section id="introduction">
+    <h2>Introduction</h2>
 
+    <p>Many confuse the Internet for the web, but they are distinct systems. The Internet is the infrastructure that connects computers, while the web is a service that runs on top of the Internet, allowing users to access and share information through hypertext links.
+        The web was created by Tim Berners-Lee in 1989 and has since evolved into a global platform for communication, commerce, and information sharing.This page follows the evolution of the web until now.  </p>
+    </p>
+</section>
     <section id="timeline">
         <h2>Timeline of Web Milestones</h2>
 
@@ -43,5 +49,43 @@ Web History (1989–1995)
             <p>Tim Berners-Lee established the W3C at MIT to create open web standards (such as HTML and HTTP) and prevent fragmentation across commercial software vendors.</p>
             <p><a href="https://timeline.web.cern.ch/node/401" target="_blank">Source: CERN Timeline</a></p> 
         </article> 
-
+        <article class="milestone">
+    <h3>1995: JavaScript Is Created</h3>
+    <p>In 1995, Brendan Eich created JavaScript at Netscape so that instead of only showing static text and images, websites could begin responding to user actions and changing content directly inside the browser.</p>
+    <p><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank">Source: MDN Web Docs</a></p>
+</article>
+<article class="milestone">
+    <h3>1996: CSS Becomes a Web Standard</h3>
+    <p>In December 1996, the W3C published CSS Level 1 as a recommendation. CSS allowed web developers to control the appearance of pages, including fonts, colors, margins and spacing, separately from the HTML structure.</p>
+    <p><a href="https://www.w3.org/TR/CSS1/" target="_blank">Source: W3C</a></p>
+</article>
+<article class="milestone">
+    <h3>2000s: The Rise of Web 2.0</h3>
+    <p>During the 2000s, websites became more interactive and focused more on user participation. People could create and share their own content through blogs, social networks, wikis and other online platforms instead of only reading information published by website owners.</p>
+    <p><a href="https://www.oreilly.com/pub/a/web2/archive/what-is-web-20.html" target="_blank">Source: O'Reilly Media</a></p>
+</article>
+<article class="milestone">
+    <h3>2000s: Growth of the Mobile Web</h3>
+    <p>As smartphones became more common, people increasingly accessed websites from mobile devices instead of only desktop computers. This pushed web developers to create pages that could work properly on smaller screens and different types of devices.</p>
+</article>
+<article class="milestone">
+    <h3>2010: Responsive Web Design</h3>
+    <p>Responsive web design became an important approach for building websites that could adapt to different screen sizes. Developers used flexible layouts, images and CSS media queries so that the same website could work on desktop computers, tablets and smartphones.</p>
+    <p><a href="https://alistapart.com/article/responsive-web-design/" target="_blank">Source: A List Apart</a></p>
+</article>
+<article class="milestone">
+    <h3>2014: HTML5 Becomes a W3C Recommendation</h3>
+    <p>On October 28, 2014, the W3C officially published HTML5 as a recommendation. HTML5 introduced new elements and features for modern websites and web applications, including better support for multimedia such as audio and video.</p>
+    <p><a href="https://www.w3.org/TR/2014/REC-html5-20141028/" target="_blank">Source: W3C</a></p>
+</article>
+<article class="milestone">
+    <h3>2010s: HTTPS Becomes Widely Used</h3>
+    <p>During the 2010s, more websites began using HTTPS instead of ordinary HTTP. HTTPS encrypts the connection between the user's browser and the web server, making information such as passwords and personal data safer while being transmitted.</p>
+    <p><a href="https://letsencrypt.org/" target="_blank">Source: Let's Encrypt</a></p>
+</article>
+<article class="milestone">
+    <h3>2020s: The Modern Web</h3>
+    <p>Today, the Web is used on computers, smartphones, tablets and many other connected devices. Modern websites combine HTML for structure, CSS for design and JavaScript for interactivity, while HTTPS helps provide secure communication.</p>
+</article>
+    </section>
 {% endblock %}

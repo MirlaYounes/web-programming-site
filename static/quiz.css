@@ -1,0 +1,492 @@
+/* ==========================================================================
+   QUIZ APP — Matcha & Soft Pink
+   Works with the starter markup: .container, #progress, #questionText,
+   .choice, .navigation, #firstBtn/#previousBtn/#nextBtn/#lastBtn/#submitBtn,
+   .submit, #resultsPanel, #correction
+   ========================================================================== */
+
+
+/* ==========================================================================
+   1. DESIGN TOKENS
+   ========================================================================== */
+:root {
+  --bg: #faf8f5;
+  --surface: #ffffff;
+  --matcha: #2d5a27;
+  --matcha-dark: #234a1f;
+  --matcha-tint: #eef4ea;
+  --pink: #e8a598;
+  --pink-soft: #f2b2a8;
+  --pink-tint: #fdf0ed;
+  --border: #d5ddd2;
+  --text: #222222;
+  --text-muted: #5b6659;
+
+  --radius-sm: 12px;
+  --radius-md: 16px;
+  --radius-pill: 999px;
+
+  --shadow-sm: 0 1px 2px rgba(45, 90, 39, 0.06), 0 2px 6px rgba(45, 90, 39, 0.05);
+  --shadow-md: 0 2px 4px rgba(45, 90, 39, 0.06), 0 8px 24px rgba(45, 90, 39, 0.1);
+  --shadow-lg: 0 4px 8px rgba(45, 90, 39, 0.06), 0 16px 40px rgba(232, 165, 152, 0.28);
+
+  --ease: all 0.25s ease-in-out;
+}
+
+
+/* ==========================================================================
+   2. BASE & PAGE LAYOUT
+   ========================================================================== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  font-family: "Poppins", "Segoe UI", system-ui, -apple-system, Arial, sans-serif;
+  color: var(--text);
+  line-height: 1.5;
+  background:
+    radial-gradient(circle at 12% 18%, rgba(242, 178, 168, 0.35), transparent 42%),
+    radial-gradient(circle at 88% 82%, rgba(45, 90, 39, 0.14), transparent 45%),
+    var(--bg);
+}
+
+.container {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 40px;
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  animation: fadeInSlideUp 0.5s ease-out both;
+}
+
+h1 {
+  margin: 0 0 24px;
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--matcha);
+}
+
+
+/* ==========================================================================
+   3. PROGRESS HEADER
+   ========================================================================== */
+#progress {
+  display: block;
+  position: relative;
+  margin: 0 0 8px;
+  padding-bottom: 14px;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--matcha);
+}
+
+/* thin pink track + matcha fill (static track; fill needs JS to animate) */
+#progress::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 6px;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(90deg, var(--matcha) 0 var(--progress, 10%), var(--pink-tint) var(--progress, 10%) 100%);
+  transition: var(--ease);
+}
+
+/* Optional: in quiz.js you can add
+   document.getElementById("progress").style.setProperty("--progress", ((currentQuestion + 1) / questions.length * 100) + "%");
+   If you skip it, the bar simply stays at 10%. */
+
+
+/* ==========================================================================
+   4. QUESTION BOX
+   ========================================================================== */
+#questionText {
+  margin: 24px 0 20px;
+  padding: 20px 24px;
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--text);
+  background: linear-gradient(135deg, var(--pink-tint) 0%, var(--matcha-tint) 100%);
+  border: 1px solid var(--border);
+  border-left: 5px solid var(--pink);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-sm);
+  animation: fadeInSlideUp 0.4s ease-out both;
+}
+
+
+/* ==========================================================================
+   5. CHOICE CARDS (custom radios)
+   ========================================================================== */
+.choice {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  min-height: 52px;
+  margin: 12px 0;
+  padding: 14px 18px;
+  font-size: 1rem;
+  color: var(--text);
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  transition: var(--ease);
+  animation: fadeInSlideUp 0.4s ease-out both;
+}
+
+/* stagger the entrance of each card */
+.choice:nth-of-type(1) { animation-delay: 0.04s; }
+.choice:nth-of-type(2) { animation-delay: 0.08s; }
+.choice:nth-of-type(3) { animation-delay: 0.12s; }
+.choice:nth-of-type(4) { animation-delay: 0.16s; }
+.choice:nth-of-type(5) { animation-delay: 0.20s; }
+
+/* restyled radio: custom circle */
+.choice input[type="radio"] {
+  appearance: none;
+  -webkit-appearance: none;
+  flex: 0 0 24px;
+  width: 24px;
+  height: 24px;
+  margin: 0;
+  border: 2px solid var(--border);
+  border-radius: 50%;
+  background: var(--surface);
+  cursor: pointer;
+  transition: var(--ease);
+}
+
+.choice input[type="radio"]:checked {
+  border-color: var(--matcha);
+  background: radial-gradient(circle, var(--matcha) 0 45%, var(--surface) 50%);
+}
+
+.choice input[type="radio"]:focus-visible {
+  outline: 3px solid var(--pink-soft);
+  outline-offset: 2px;
+}
+
+/* hover: lift + pink border */
+.choice:hover {
+  transform: translateY(-2px);
+  border-color: var(--pink-soft);
+  box-shadow: var(--shadow-md);
+}
+
+/* selected: pink border + matcha tint (modern browsers via :has) */
+.choice:has(input:checked) {
+  border-color: var(--pink);
+  background: var(--matcha-tint);
+  box-shadow: var(--shadow-md);
+}
+
+.choice:has(input:focus-visible) {
+  outline: 3px solid var(--pink-soft);
+  outline-offset: 2px;
+}
+
+
+/* ==========================================================================
+   6. NAVIGATION & BUTTONS
+   ========================================================================== */
+.navigation {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 32px;
+}
+
+button {
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+  min-height: 44px;
+  padding: 10px 22px;
+  color: var(--matcha);
+  background: var(--surface);
+  border: 2px solid var(--matcha);
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition: var(--ease);
+}
+
+button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+button:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: var(--shadow-sm);
+}
+
+button:focus-visible {
+  outline: 3px solid var(--pink-soft);
+  outline-offset: 3px;
+}
+
+/* First / Previous / Next / Last: outlined matcha, pink on hover */
+#firstBtn,
+#previousBtn,
+#nextBtn,
+#lastBtn {
+  flex: 1 1 0;
+}
+
+#firstBtn:hover:not(:disabled),
+#previousBtn:hover:not(:disabled),
+#nextBtn:hover:not(:disabled),
+#lastBtn:hover:not(:disabled) {
+  background: var(--pink-soft);
+  border-color: var(--pink-soft);
+  color: var(--text);
+}
+
+/* Submit: solid matcha */
+.submit {
+  margin-top: 28px;
+}
+
+#submitBtn {
+  width: 100%;
+  color: #ffffff;
+  background: var(--matcha);
+  border-color: var(--matcha);
+  font-weight: 700;
+}
+
+#submitBtn:hover:not(:disabled) {
+  background: var(--matcha-dark);
+  border-color: var(--matcha-dark);
+}
+
+/* Disabled state */
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+
+/* ==========================================================================
+   7. RESULTS PANEL
+   ========================================================================== */
+#resultsPanel {
+  display: none; /* quiz.js reveals it via showResults() */
+  animation: fadeInSlideUp 0.5s ease-out both;
+}
+
+#resultsPanel h2 {
+  margin: 0 0 16px;
+  font-size: 1.5rem;
+  color: var(--matcha);
+}
+
+/* Summary card: score, percentage, message */
+#resultsPanel > p {
+  margin: 8px 0;
+  padding: 14px 20px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  background: linear-gradient(135deg, var(--matcha-tint), var(--pink-tint));
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-sm);
+}
+
+#resultsPanel h3 {
+  margin: 28px 0 12px;
+  font-size: 1.2rem;
+  color: var(--matcha);
+}
+
+/* Correction: dark card, high contrast */
+#correction {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  max-height: 480px;
+  overflow-y: auto;
+  padding: 24px;
+  font-family: "Fira Code", "Consolas", "Courier New", monospace;
+  font-size: 0.9rem;
+  line-height: 1.65;
+  color: #f3f1ec;
+  background: #1f2a1e;
+  border-left: 5px solid var(--pink);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-md);
+}
+
+
+/* ==========================================================================
+   8. ANIMATIONS
+   ========================================================================== */
+@keyframes fadeInSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+
+/* ==========================================================================
+   9. RESPONSIVE BREAKPOINTS
+   ========================================================================== */
+
+/* Tablet: 601px – 1024px */
+@media (min-width: 601px) and (max-width: 1024px) {
+  .container {
+    max-width: 650px;
+    padding: 32px;
+  }
+}
+
+/* Desktop: 1025px+ */
+@media (min-width: 1025px) {
+  .container {
+    max-width: 800px;
+    padding: 48px;
+  }
+
+  .choice:hover {
+    transform: translateY(-3px) translateX(4px); /* subtle drift on hover */
+    border-color: var(--pink);
+  }
+}
+
+/* Mobile: up to 600px */
+@media (max-width: 600px) {
+  body {
+    padding: 0;
+    align-items: stretch;
+  }
+
+  .container {
+    max-width: 100%;
+    min-height: 100vh;
+    padding: 16px;
+    border-radius: 0;
+    border: none;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  #questionText {
+    padding: 16px;
+    font-size: 1.1rem;
+  }
+
+  /* 48px minimum touch targets */
+  .choice,
+  button {
+    min-height: 48px;
+  }
+
+  .choice input[type="radio"] {
+    flex-basis: 28px;
+    width: 28px;
+    height: 28px;
+  }
+
+  /* stacked navigation */
+  .navigation {
+    flex-direction: column;
+  }
+
+  #firstBtn,
+  #previousBtn,
+  #nextBtn,
+  #lastBtn,
+  #submitBtn {
+    width: 100%;
+    flex: none;
+  }
+
+  #correction {
+    padding: 16px;
+    font-size: 0.82rem;
+    max-height: 60vh;
+  }
+}
+
+
+/* ==========================================================================
+   10. OPTIONAL: MOUSE REPULSION (JavaScript)
+   Uncomment and paste into quiz.js (or a <script> tag) if you want it.
+   Note: .choice already uses transform for hover; this applies a small
+   push-away offset using the --push-x / --push-y custom properties.
+   ========================================================================== */
+
+/* Add this CSS too if you use the script below:
+.choice {
+  translate: var(--push-x, 0px) var(--push-y, 0px);
+}
+*/
+
+/*
+document.addEventListener("mousemove", (e) => {
+  const RADIUS = 140;   // px: how close the cursor must be to push
+  const STRENGTH = 10;  // px: max shift
+
+  document.querySelectorAll(".choice").forEach((card) => {
+    const rect = card.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+    const dx = cx - e.clientX;
+    const dy = cy - e.clientY;
+    const dist = Math.hypot(dx, dy);
+
+    if (dist < RADIUS && dist > 0) {
+      const force = (1 - dist / RADIUS) * STRENGTH;
+      card.style.setProperty("--push-x", (dx / dist) * force + "px");
+      card.style.setProperty("--push-y", (dy / dist) * force + "px");
+    } else {
+      card.style.setProperty("--push-x", "0px");
+      card.style.setProperty("--push-y", "0px");
+    }
+  });
+});
+
+document.addEventListener("mouseleave", () => {
+  document.querySelectorAll(".choice").forEach((card) => {
+    card.style.setProperty("--push-x", "0px");
+    card.style.setProperty("--push-y", "0px");
+  });
+});
+*/
