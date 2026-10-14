@@ -3,13 +3,16 @@
 // ======================================================
 const questions = [
 {
-   question:
-      "Which keyword declares a block-scoped variable that can later be reassigned?",
-     choices: ["var", "let", "const", "static"],
-     answer: 1,
-     explanation:
-       "let declares a block-scoped variable whose value may later be reassigned.",
-   },
+  question: "Which of the following is a correct way to write an arrow function in JavaScript?",
+  choices: [
+    "const add = (a, b) => a + b;", 
+    "function => add(a, b) { return a + b; }", 
+    "arrow add = (a, b) => { a + b };", 
+    "const add = => (a, b) { return a + b; }"
+  ],
+  answer: 0,
+  explanation: "Arrow functions use the `=>` syntax after the parameter list to define functions concisely.",
+},
    {
     question: "Which JavaScript operator tests strict equality?",
     choices: ["=", "==", "===", "!="],
@@ -99,7 +102,7 @@ return score;
 // ======================================================
 function calculatePercentage(score) {
   //   Calculate the percentage score based on the total number of questions.
- if (questions.length == 0) return 0;
+ if (questions.length === 0) return 0;
   return Math.round((score / questions.length) * 100);
 }
 
@@ -234,3 +237,39 @@ function showResults(score, percentage, message, correction) {
 // START APPLICATION
 // ======================================================
 renderQuestion();
+const form = document.getElementById("profile-form");
+const reviewPanel = document.getElementById("review-panel");
+const editBtn = document.getElementById("edit-btn");
+const confirmBtn = document.getElementById("confirm-btn");
+
+form.addEventListener("submit", function (e) {
+    e.preventDefault(); 
+
+    if (!form.checkValidity()) { 
+        form.reportValidity();
+        return; 
+    }
+
+    // Continue right here: collect the data and show the review panel
+    const fullName = document.getElementById("fullname").value;
+    const grad = document.querySelector('input[name="graduation"]:checked')?.value || "";
+    const skills = [...document.querySelectorAll('input[name="skills"]:checked')].map(cb => cb.value);
+    const software = [...document.getElementById("software").selectedOptions].map(opt => opt.value);
+
+    document.getElementById("review-fullname").textContent = fullName;
+    document.getElementById("review-graduation").textContent = grad;
+    document.getElementById("review-skills").textContent = skills.join(", ");
+    document.getElementById("review-software").textContent = software.join(", ");
+
+    form.classList.add("hidden");
+    reviewPanel.classList.add("open");
+});
+
+editBtn.addEventListener("click", function () {
+    reviewPanel.classList.remove("open");
+    form.classList.remove("hidden");
+});
+
+confirmBtn.addEventListener("click", function () {
+    HTMLFormElement.prototype.submit.call(form);
+});
