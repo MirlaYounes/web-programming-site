@@ -1,4 +1,3 @@
-
 /* ======================================================
    APPLICATION STATE
 ====================================================== */
@@ -7,6 +6,18 @@ let currentQuestion = 0;
 let totalQuestions = 0;
 let userAnswers = [];
 const questionCache = {};
+
+/* ======================================================
+   CHECK WHETHER ALL QUESTIONS ARE ANSWERED
+====================================================== */
+
+function allQuestionsAnswered() {
+  return (
+    totalQuestions > 0 &&
+    userAnswers.length === totalQuestions &&
+     Array.from(userAnswers).every(answer => Number.isInteger(answer))
+  );
+}
 
 /* ======================================================
    LOADING AND ERROR MESSAGES
@@ -24,8 +35,8 @@ function clearError() {
   const error = document.getElementById("error");
 
   if (error) {
-    error.hidden = true;
     error.textContent = "";
+    error.hidden = true;
   }
 }
 
@@ -56,7 +67,7 @@ async function fetchQuestionCount() {
   const data = await response.json();
 
   if (!Number.isInteger(data.count) || data.count <= 0) {
-    throw new Error("The server returned an invalid question count.");
+    throw new Error("Invalid question count returned by server.");
   }
 
   return data.count;
@@ -67,8 +78,7 @@ async function fetchQuestionCount() {
 ====================================================== */
 
 async function getQuestion(index) {
-  // Return the cached question if we already fetched it.
-  if (questionCache[index]) {
+  if (Object.prototype.hasOwnProperty.call(questionCache, index)) {
     return questionCache[index];
   }
 
@@ -80,20 +90,20 @@ async function getQuestion(index) {
     );
   }
 
-  const question = await response.json();
+  const q = await response.json();
 
   if (
-    typeof question.question !== "string" ||
-    !Array.isArray(question.choices) ||
-    typeof question.answer !== "number"
+    typeof q.question !== "string" ||
+    !Array.isArray(q.choices) ||
+    !Number.isInteger(q.answer) ||
+    q.answer < 0 ||
+    q.answer >= q.choices.length
   ) {
     throw new Error("The server returned invalid question data.");
   }
 
-  // Save the question so we don't fetch it again.
-  questionCache[index] = question;
-
-  return question;
+  questionCache[index] = q;
+  return q;
 }
 
 /* ======================================================
@@ -109,10 +119,9 @@ async function loadQuestion(index) {
   setLoading(true);
 
   try {
-    const question = await getQuestion(index);
-
+    const q = await getQuestion(index);
     currentQuestion = index;
-    renderQuestion(question);
+    renderQuestion(q);
   } catch (error) {
     showError(error.message || "Could not load the question.");
   } finally {
@@ -126,6 +135,7 @@ async function loadQuestion(index) {
 
 function saveAnswer(choiceIndex) {
   userAnswers[currentQuestion] = choiceIndex;
+  clearError();
 }
 
 /* ======================================================
@@ -173,9 +183,7 @@ function calculateScore() {
 ====================================================== */
 
 function calculatePercentage(score) {
-  if (totalQuestions === 0) {
-    return 0;
-  }
+  if (totalQuestions === 0) return 0;
 
   return Math.round((score / totalQuestions) * 100);
 }
@@ -215,15 +223,13 @@ function buildCorrection() {
     const correctChoiceText = q.choices[q.answer];
 
     const result =
-      userChoiceIndex === q.answer
-        ? "Correct"
-        : "Incorrect";
+      userChoiceIndex === q.answer ? "Correct" : "Incorrect";
 
     correction += `Q${i + 1}: ${q.question}\n`;
     correction += `Your Answer: ${userChoiceText}\n`;
     correction += `Correct Answer: ${correctChoiceText}\n`;
     correction += `Result: ${result}\n`;
-    correction += `Explanation: ${q.explanation}\n\n`;
+    correction += `Explanation: ${q.explanation || ""}\n\n`;
   }
 
   return correction;
@@ -235,11 +241,16 @@ function buildCorrection() {
 
 async function submitQuiz() {
   clearError();
+
+  if (!allQuestionsAnswered()) {
+    showError("Please answer all the questions before submitting."); // ADDED
+    return;
+  }
+
   setLoading(true);
 
   try {
-    // Make sure every question is available for scoring
-    // and correction, including questions not visited.
+    // Ensure all questions are cached for scoring/correction.
     for (let i = 0; i < totalQuestions; i++) {
       await getQuestion(i);
     }
@@ -264,17 +275,10 @@ async function submitQuiz() {
 function renderQuestion(q) {
   clearError();
 
-  const quizPanel = document.getElementById("quizPanel");
-
-  if (quizPanel) {
-    quizPanel.style.display = "";
-  }
-
   document.getElementById("progress").textContent =
     `Question ${currentQuestion + 1} of ${totalQuestions}`;
 
-  document.getElementById("questionText").textContent =
-    q.question;
+  document.getElementById("questionText").textContent = q.question;
 
   const choicesContainer = document.getElementById("choices");
   choicesContainer.innerHTML = "";
@@ -288,20 +292,16 @@ function renderQuestion(q) {
     radio.name = "answer";
     radio.value = i;
 
-    // Restore the user's previous answer.
     if (userAnswers[currentQuestion] === i) {
       radio.checked = true;
     }
 
-    // Save the selected answer.
-    radio.onclick = function () {
+    radio.addEventListener("change", function () {
       saveAnswer(i);
-    };
+    });
 
     label.appendChild(radio);
-    label.appendChild(
-      document.createTextNode(" " + q.choices[i])
-    );
+    label.appendChild(document.createTextNode(" " + q.choices[i]));
 
     choicesContainer.appendChild(label);
   }
@@ -325,7 +325,6 @@ function renderQuestion(q) {
 
 function showResults(score, percentage, message, correction) {
   document.getElementById("quizPanel").style.display = "none";
-
   document.getElementById("resultsPanel").style.display = "block";
 
   document.getElementById("scoreText").textContent =
@@ -334,11 +333,8 @@ function showResults(score, percentage, message, correction) {
   document.getElementById("percentageText").textContent =
     `Percentage: ${percentage}%`;
 
-  document.getElementById("performanceText").textContent =
-    message;
-
-  document.getElementById("correction").textContent =
-    correction;
+  document.getElementById("performanceText").textContent = message;
+  document.getElementById("correction").textContent = correction;
 }
 
 /* ======================================================
@@ -349,18 +345,18 @@ async function initializeQuiz() {
   setLoading(true);
   clearError();
 
-  const quizPanel = document.getElementById("quizPanel");
-
-  if (quizPanel) {
-    quizPanel.style.display = "none";
-  }
+  document.getElementById("quizPanel").style.display = "none";
+  document.getElementById("resultsPanel").style.display = "none";
 
   try {
     totalQuestions = await fetchQuestionCount();
-
     userAnswers = new Array(totalQuestions);
 
-    await loadQuestion(0);
+    const firstQuestion = await getQuestion(0);
+    currentQuestion = 0;
+
+    renderQuestion(firstQuestion);
+    document.getElementById("quizPanel").style.display = "";
   } catch (error) {
     showError(error.message || "Could not initialize the quiz.");
   } finally {
