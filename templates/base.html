@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>{% block title %}My Web Programming Portfolio{% endblock %}</title>
-
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet"
           href="{{ url_for('static', filename='style.css') }}">
           {% block head %}{% endblock %}
@@ -13,17 +13,38 @@
 
 <body>
 
-    <header>
-        <nav>
-<li><a href="{{ url_for('internet_history') }}">Internet History</a></li>
-<li><a href="{{ url_for('web_history') }}">Web History</a></li>
-<li><a href="{{ url_for('internet_history_ai') }}">Internet History (AI)</a></li>
-<li><a href="{{ url_for('web_history_ai') }}">Web History (AI)</a></li>
-</nav>
-        <h1>Web Programming Portfolio — Mirla Tatiana Younes</h1>
-        <p>A live site that grows one page or feature every week.</p>
-    </header>
+       <header>
+    {% block nav %}
+    <button id="menu-toggle" aria-label="Toggle menu">☰ Menu</button>
 
+    <aside id="sidebar">
+        <ul>
+            <li><a href="/">Home</a></li>
+            {% set pages = [
+                ('internet_history', 'Internet History'),
+                ('web_history', 'Web History'),
+                ('internet_history_ai', 'Internet History (AI)'),
+                ('web_history_ai', 'Web History (AI)')
+            ] %}
+            {% for endpoint, label in pages %}
+                {% if request.endpoint != endpoint %}
+                <li><a href="{{ url_for(endpoint) }}">{{ label }}</a></li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </aside>
+
+    <script>
+        document.getElementById("menu-toggle").addEventListener("click", function () {
+            document.getElementById("sidebar").classList.toggle("open");
+        });
+    </script>
+    {% endblock %}
+
+    <h1>Web Programming Portfolio — Mirla Tatiana Younes</h1>
+    <p>A live site that grows one page or feature every week.</p>
+</header>
+{% block hero %}{% endblock %}
     <main>
         {% block content %}
         {% endblock %}

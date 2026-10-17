@@ -10,18 +10,8 @@ academic background, technical skills, internship
 experience, and Final Year Project preferences.</p>
 <div class="profile-layout">
 
-    <aside class="form-sidebar">
-        <h3>Your Profile</h3>
-
-        <div class="step active">1. Personal Information</div>
-        <div class="step">2. Academic Information</div>
-        <div class="step">3. Technical Background</div>
-        <div class="step">4. Final Year Project</div>
-        <div class="step">5. Confirmation</div>
-    </aside>
-
     <main class="form-content">
-<form action="{{ url_for('submit_profile') }}" method="post">
+<form id="profile-form" action="{{ url_for('submit_profile') }}" method="post">
 
 <fieldset>
     <legend>1. Personal Information</legend>
@@ -264,8 +254,42 @@ experience, and Final Year Project preferences.</p>
 <button type="reset">Clear Form</button>
 
 </form>
+
+<section id="review-panel" class="panel">
+    <h2>Review Your Profile</h2>
+    
+    <p><strong>Student ID:</strong> <span id="review-student_id"></span></p>
+    <p><strong>Full Name:</strong> <span id="review-fullname"></span></p>
+    <p><strong>Email:</strong> <span id="review-email"></span></p>
+    <p><strong>Phone:</strong> <span id="review-phone"></span></p>
+    <p><strong>Birthdate:</strong> <span id="review-birthdate"></span></p>
+    <p><strong>GitHub:</strong> <span id="review-portfolio"></span></p>
+    <p><strong>GIN446 Website:</strong> <span id="review-gin446"></span></p>
+    <p><strong>Major:</strong> <span id="review-major"></span></p>
+    <p><strong>GPA:</strong> <span id="review-gpa"></span></p>
+    <p><strong>Credits:</strong> <span id="review-credits"></span></p>
+    <p><strong>Graduation:</strong> <span id="review-graduation"></span></p>
+    <p><strong>Graduation Month:</strong> <span id="review-graduation_month"></span></p>
+    <p><strong>Internship Completed:</strong> <span id="review-internship_completed"></span></p>
+    <p><strong>Skills:</strong> <span id="review-skills"></span></p>
+    <p><strong>Primary Language:</strong> <span id="review-language"></span></p>
+    <p><strong>Software:</strong> <span id="review-software"></span></p>
+    <p><strong>Project Title:</strong> <span id="review-project_title"></span></p>
+    <p><strong>Project Area:</strong> <span id="review-project_area"></span></p>
+    <p><strong>Description:</strong> <span id="review-description"></span></p>
+    <p><strong>Team Size:</strong> <span id="review-team_size"></span></p>
+    <p><strong>Dashboard Color:</strong> <span id="review-project_color"></span></p>
+    <p><strong>Meeting Date:</strong> <span id="review-meeting_date"></span></p>
+    <p><strong>Meeting Time:</strong> <span id="review-meeting_time"></span></p>
+
+    
+    <button type="button" id="edit-btn">Edit</button>
+    <button type="button" id="confirm-btn">Confirm & Submit</button>
+</section>
+
     </main>
 </div>
+<script src="{{ url_for('static', filename='form.js') }}"></script>
 {% endblock %}
 
 

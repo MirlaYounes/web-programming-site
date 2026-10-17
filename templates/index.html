@@ -1,26 +1,57 @@
 {% extends "base.html" %}
-
-{% block title %}
-Home
+{% block nav %}{% endblock %}
+{% block head %}
+<style>
+    .hero {
+        background:
+            linear-gradient(rgba(18, 34, 74, 0.6), rgba(18, 34, 74, 0.6)),
+            url("{{ url_for('static', filename='header-bg.png') }}") center 35% / cover no-repeat;
+        padding: 120px 20px;
+    }
+</style>
+{% endblock %}
+{% block hero %}
+<section class="hero">
+    <div class="hero-inner">
+        <p class="eyebrow">GIN446 · Fall 2026-2027</p>
+        <h2>A Portfolio That Grows Every Week</h2>
+        <p>A live Flask site where each week adds a new page or feature, from internet history to a working JavaScript app.</p>
+        <a class="btn" href="#weekly">View Weekly Work</a>
+    </div>
+</section>
 {% endblock %}
 
 {% block content %}
+<div class="home-section" id="weekly">
+    <p class="label">Weekly Work</p>
+    <h2 class="big">One Page. One Feature. Every Week.</h2>
+    <p class="lead">Each week of the course adds something new to this site.</p>
 
-<section>
-    <h2>Weekly Work</h2>
-
-  
-    <ul>
-        {% for item in weekly_work %}
-            <li>
-                <a href="{{ item.url }}">
-                    Week {{ item.week }} — {{ item.title }}
-                </a>
-            </li>
-        {% else %}
-            <li>Week 1 — live site launched.</li>
-        {% endfor %}
-    </ul>
-</section>
-
+    <div class="cards">
+        <a class="card" href="{{ url_for('internet_history') }}">
+            <span class="icon">🌐</span>
+            <div><h3>Week 2 — History of the Internet</h3><p>How the internet began and grew.</p></div>
+        </a>
+        <a class="card" href="{{ url_for('web_history') }}">
+            <span class="icon">🕸️</span>
+            <div><h3>Week 2 — History of the Web</h3><p>From the first website to today.</p></div>
+        </a>
+        <a class="card" href="{{ url_for('internet_history_ai') }}">
+            <span class="icon">🤖</span>
+            <div><h3>Week 2 — History of the Internet (AI)</h3><p>The same topic, written with AI.</p></div>
+        </a>
+        <a class="card" href="{{ url_for('web_history_ai') }}">
+            <span class="icon">💡</span>
+            <div><h3>Week 2 — History of the Web (AI)</h3><p>The web's story, written with AI.</p></div>
+        </a>
+        <a class="card" href="/submit-profile">
+            <span class="icon">📝</span>
+            <div><h3>Week 4 — Engineering Student Profile</h3><p>A form that collects student details.</p></div>
+        </a>
+        <a class="card" href="/quiz">
+            <span class="icon">⚡</span>
+            <div><h3>Week 5 — JavaScript App</h3><p>An interactive quiz built with JavaScript.</p></div>
+        </a>
+    </div>
+</div>
 {% endblock %}

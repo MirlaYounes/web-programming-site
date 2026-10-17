@@ -21,10 +21,15 @@ from quiz_api import db, Question, database_uri
 #E postgresql://quiz_eas7_user:lYIKxbxAJQnKVC2tahvPTbj5K5ttuvDK@dpg-db17ba6gekts73chvpr0-a.virginia-postgres.render.com/quiz_eas7
 QUESTIONS = [
     {
-        "question": "Which keyword declares a block-scoped variable that can later be reassigned?",
-        "choices": ["var", "let", "const", "static"],
-        "answer": 1,
-        "explanation": "let declares a block-scoped variable whose value may later be reassigned.",
+         "question": "Which of the following is a correct way to write an arrow function in JavaScript?",
+  "choices": [
+    "const add = (a, b) => a + b;", 
+    "function => add(a, b) { return a + b; }", 
+    "arrow add = (a, b) => { a + b };", 
+    "const add = => (a, b) { return a + b; }"
+  ],
+    "answer": 0,
+    "explanation": "Arrow functions use the `=>` syntax after the parameter list to define functions concisely.",
     },
     {
         "question": "Which JavaScript operator tests strict equality?",

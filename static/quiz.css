@@ -1,8 +1,9 @@
 /* ==========================================================================
-   QUIZ APP — Matcha & Soft Pink
-   Works with the starter markup: .container, #progress, #questionText,
-   .choice, .navigation, #firstBtn/#previousBtn/#nextBtn/#lastBtn/#submitBtn,
-   .submit, #resultsPanel, #correction
+   QUIZ APP — Navy & Light Blue
+   (variable names kept from the original: "matcha" = main blue, "pink" = light blue)
+   Works with: .container, #progress, #questionText, .choice, .navigation,
+   #firstBtn/#previousBtn/#nextBtn/#lastBtn/#submitBtn, .submit,
+   #resultsPanel, #correction
    ========================================================================== */
 
 
@@ -10,25 +11,25 @@
    1. DESIGN TOKENS
    ========================================================================== */
 :root {
-  --bg: #faf8f5;
+  --bg: #f7faff;
   --surface: #ffffff;
-  --matcha: #2d5a27;
-  --matcha-dark: #234a1f;
-  --matcha-tint: #eef4ea;
-  --pink: #e8a598;
-  --pink-soft: #f2b2a8;
-  --pink-tint: #fdf0ed;
-  --border: #d5ddd2;
-  --text: #222222;
-  --text-muted: #5b6659;
+  --matcha: #1d4fb8;        /* main blue */
+  --matcha-dark: #12224a;   /* navy */
+  --matcha-tint: #eaf1fc;   /* very light blue */
+  --pink: #8fb1ea;          /* light blue accent */
+  --pink-soft: #b9d0f3;
+  --pink-tint: #f4f7fc;
+  --border: #d3dcea;
+  --text: #1a1f2e;
+  --text-muted: #5b6577;
 
   --radius-sm: 12px;
   --radius-md: 16px;
   --radius-pill: 999px;
 
-  --shadow-sm: 0 1px 2px rgba(45, 90, 39, 0.06), 0 2px 6px rgba(45, 90, 39, 0.05);
-  --shadow-md: 0 2px 4px rgba(45, 90, 39, 0.06), 0 8px 24px rgba(45, 90, 39, 0.1);
-  --shadow-lg: 0 4px 8px rgba(45, 90, 39, 0.06), 0 16px 40px rgba(232, 165, 152, 0.28);
+  --shadow-sm: 0 1px 2px rgba(18, 34, 74, 0.06), 0 2px 6px rgba(18, 34, 74, 0.05);
+  --shadow-md: 0 2px 4px rgba(18, 34, 74, 0.06), 0 8px 24px rgba(18, 34, 74, 0.10);
+  --shadow-lg: 0 4px 8px rgba(18, 34, 74, 0.06), 0 16px 40px rgba(29, 79, 184, 0.18);
 
   --ease: all 0.25s ease-in-out;
 }
@@ -43,27 +44,29 @@
   box-sizing: border-box;
 }
 
+/* soft gradient background (no flex, so the header and footer stay in place) */
 body {
-  margin: 0;
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 24px;
-  font-family: "Poppins", "Segoe UI", system-ui, -apple-system, Arial, sans-serif;
-  color: var(--text);
-  line-height: 1.5;
   background:
-    radial-gradient(circle at 12% 18%, rgba(242, 178, 168, 0.35), transparent 42%),
-    radial-gradient(circle at 88% 82%, rgba(45, 90, 39, 0.14), transparent 45%),
+    radial-gradient(circle at 12% 18%, rgba(143, 177, 234, 0.35), transparent 42%),
+    radial-gradient(circle at 88% 82%, rgba(29, 79, 184, 0.12), transparent 45%),
     var(--bg);
+  background-attachment: fixed;
+}
+
+/* if the quiz sits inside another white box from style.css, remove that extra box */
+main > div:has(> .container) {
+  background: none;
+  border: none;
+  box-shadow: none;
+  padding: 0;
 }
 
 .container {
   width: 100%;
   max-width: 800px;
-  margin: 0 auto;
+  margin: 40px auto;
   padding: 40px;
+  color: var(--text);
   background: rgba(255, 255, 255, 0.82);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
@@ -73,13 +76,13 @@ body {
   animation: fadeInSlideUp 0.5s ease-out both;
 }
 
-h1 {
+.container h1 {
   margin: 0 0 24px;
   text-align: center;
   font-size: 2rem;
   font-weight: 700;
   letter-spacing: -0.01em;
-  color: var(--matcha);
+  color: var(--matcha-dark);
 }
 
 
@@ -96,7 +99,7 @@ h1 {
   color: var(--matcha);
 }
 
-/* thin pink track + matcha fill (static track; fill needs JS to animate) */
+/* thin light track + blue fill (static track; fill needs JS to animate) */
 #progress::after {
   content: "";
   position: absolute;
@@ -105,13 +108,9 @@ h1 {
   width: 100%;
   height: 6px;
   border-radius: var(--radius-pill);
-  background: linear-gradient(90deg, var(--matcha) 0 var(--progress, 10%), var(--pink-tint) var(--progress, 10%) 100%);
+  background: linear-gradient(90deg, var(--matcha) 0 var(--progress, 10%), var(--matcha-tint) var(--progress, 10%) 100%);
   transition: var(--ease);
 }
-
-/* Optional: in quiz.js you can add
-   document.getElementById("progress").style.setProperty("--progress", ((currentQuestion + 1) / questions.length * 100) + "%");
-   If you skip it, the bar simply stays at 10%. */
 
 
 /* ==========================================================================
@@ -154,6 +153,9 @@ h1 {
   cursor: pointer;
   transition: var(--ease);
   animation: fadeInSlideUp 0.4s ease-out both;
+
+  /* mouse repulsion: the script sets --push-x / --push-y */
+  translate: var(--push-x, 0px) var(--push-y, 0px);
 }
 
 /* stagger the entrance of each card */
@@ -188,16 +190,16 @@ h1 {
   outline-offset: 2px;
 }
 
-/* hover: lift + pink border */
+/* hover: lift + light blue border */
 .choice:hover {
   transform: translateY(-2px);
-  border-color: var(--pink-soft);
+  border-color: var(--pink);
   box-shadow: var(--shadow-md);
 }
 
-/* selected: pink border + matcha tint (modern browsers via :has) */
+/* selected: blue border + light blue tint */
 .choice:has(input:checked) {
-  border-color: var(--pink);
+  border-color: var(--matcha);
   background: var(--matcha-tint);
   box-shadow: var(--shadow-md);
 }
@@ -218,7 +220,7 @@ h1 {
   margin-top: 32px;
 }
 
-button {
+.container button {
   font-family: inherit;
   font-size: 0.95rem;
   font-weight: 600;
@@ -232,22 +234,22 @@ button {
   transition: var(--ease);
 }
 
-button:hover:not(:disabled) {
+.container button:hover:not(:disabled) {
   transform: translateY(-2px);
   box-shadow: var(--shadow-md);
 }
 
-button:active:not(:disabled) {
+.container button:active:not(:disabled) {
   transform: translateY(0);
   box-shadow: var(--shadow-sm);
 }
 
-button:focus-visible {
+.container button:focus-visible {
   outline: 3px solid var(--pink-soft);
   outline-offset: 3px;
 }
 
-/* First / Previous / Next / Last: outlined matcha, pink on hover */
+/* First / Previous / Next / Last: outlined blue, light blue on hover */
 #firstBtn,
 #previousBtn,
 #nextBtn,
@@ -261,10 +263,10 @@ button:focus-visible {
 #lastBtn:hover:not(:disabled) {
   background: var(--pink-soft);
   border-color: var(--pink-soft);
-  color: var(--text);
+  color: var(--matcha-dark);
 }
 
-/* Submit: solid matcha */
+/* Submit: solid blue */
 .submit {
   margin-top: 28px;
 }
@@ -280,10 +282,11 @@ button:focus-visible {
 #submitBtn:hover:not(:disabled) {
   background: var(--matcha-dark);
   border-color: var(--matcha-dark);
+  color: #ffffff;
 }
 
 /* Disabled state */
-button:disabled {
+.container button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
@@ -300,7 +303,7 @@ button:disabled {
 #resultsPanel h2 {
   margin: 0 0 16px;
   font-size: 1.5rem;
-  color: var(--matcha);
+  color: var(--matcha-dark);
 }
 
 /* Summary card: score, percentage, message */
@@ -331,8 +334,8 @@ button:disabled {
   font-family: "Fira Code", "Consolas", "Courier New", monospace;
   font-size: 0.9rem;
   line-height: 1.65;
-  color: #f3f1ec;
-  background: #1f2a1e;
+  color: #eef3fb;
+  background: #12224a;
   border-left: 5px solid var(--pink);
   border-radius: var(--radius-sm);
   box-shadow: var(--shadow-md);
@@ -390,20 +393,16 @@ button:disabled {
 
 /* Mobile: up to 600px */
 @media (max-width: 600px) {
-  body {
-    padding: 0;
-    align-items: stretch;
-  }
-
   .container {
     max-width: 100%;
-    min-height: 100vh;
+    margin: 16px 0;
     padding: 16px;
     border-radius: 0;
-    border: none;
+    border-left: none;
+    border-right: none;
   }
 
-  h1 {
+  .container h1 {
     font-size: 1.5rem;
   }
 
@@ -414,7 +413,7 @@ button:disabled {
 
   /* 48px minimum touch targets */
   .choice,
-  button {
+  .container button {
     min-height: 48px;
   }
 
@@ -444,49 +443,3 @@ button:disabled {
     max-height: 60vh;
   }
 }
-
-
-/* ==========================================================================
-   10. OPTIONAL: MOUSE REPULSION (JavaScript)
-   Uncomment and paste into quiz.js (or a <script> tag) if you want it.
-   Note: .choice already uses transform for hover; this applies a small
-   push-away offset using the --push-x / --push-y custom properties.
-   ========================================================================== */
-
-/* Add this CSS too if you use the script below:
-.choice {
-  translate: var(--push-x, 0px) var(--push-y, 0px);
-}
-*/
-
-/*
-document.addEventListener("mousemove", (e) => {
-  const RADIUS = 140;   // px: how close the cursor must be to push
-  const STRENGTH = 10;  // px: max shift
-
-  document.querySelectorAll(".choice").forEach((card) => {
-    const rect = card.getBoundingClientRect();
-    const cx = rect.left + rect.width / 2;
-    const cy = rect.top + rect.height / 2;
-    const dx = cx - e.clientX;
-    const dy = cy - e.clientY;
-    const dist = Math.hypot(dx, dy);
-
-    if (dist < RADIUS && dist > 0) {
-      const force = (1 - dist / RADIUS) * STRENGTH;
-      card.style.setProperty("--push-x", (dx / dist) * force + "px");
-      card.style.setProperty("--push-y", (dy / dist) * force + "px");
-    } else {
-      card.style.setProperty("--push-x", "0px");
-      card.style.setProperty("--push-y", "0px");
-    }
-  });
-});
-
-document.addEventListener("mouseleave", () => {
-  document.querySelectorAll(".choice").forEach((card) => {
-    card.style.setProperty("--push-x", "0px");
-    card.style.setProperty("--push-y", "0px");
-  });
-});
-*/

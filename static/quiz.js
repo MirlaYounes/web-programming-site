@@ -237,39 +237,3 @@ function showResults(score, percentage, message, correction) {
 // START APPLICATION
 // ======================================================
 renderQuestion();
-const form = document.getElementById("profile-form");
-const reviewPanel = document.getElementById("review-panel");
-const editBtn = document.getElementById("edit-btn");
-const confirmBtn = document.getElementById("confirm-btn");
-
-form.addEventListener("submit", function (e) {
-    e.preventDefault(); 
-
-    if (!form.checkValidity()) { 
-        form.reportValidity();
-        return; 
-    }
-
-    // Continue right here: collect the data and show the review panel
-    const fullName = document.getElementById("fullname").value;
-    const grad = document.querySelector('input[name="graduation"]:checked')?.value || "";
-    const skills = [...document.querySelectorAll('input[name="skills"]:checked')].map(cb => cb.value);
-    const software = [...document.getElementById("software").selectedOptions].map(opt => opt.value);
-
-    document.getElementById("review-fullname").textContent = fullName;
-    document.getElementById("review-graduation").textContent = grad;
-    document.getElementById("review-skills").textContent = skills.join(", ");
-    document.getElementById("review-software").textContent = software.join(", ");
-
-    form.classList.add("hidden");
-    reviewPanel.classList.add("open");
-});
-
-editBtn.addEventListener("click", function () {
-    reviewPanel.classList.remove("open");
-    form.classList.remove("hidden");
-});
-
-confirmBtn.addEventListener("click", function () {
-    HTMLFormElement.prototype.submit.call(form);
-});

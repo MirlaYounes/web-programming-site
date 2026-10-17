@@ -1,22 +1,25 @@
+/* ================= Profile form ================= */
+
 form {
     max-width: 800px;
-    margin: 30px auto;
-    padding: 20px;
+    margin: 0 auto;
+    padding: 0;
 }
 
 .profile-layout {
     display: flex;
     max-width: 1100px;
     margin: 40px auto;
-    background: #fffdf9;
-    border-radius: 24px;
+    background: #ffffff;
+    border: 1px solid #e3e9f3;
+    border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 10px 40px rgba(18, 34, 74, 0.10);
 }
 
 .form-sidebar {
     width: 260px;
-    background: #b7c99a;
+    background: #eaf1fc;
     padding: 30px 20px;
 }
 
@@ -27,37 +30,60 @@ form {
 
 .form-sidebar h3 {
     margin-top: 0;
-    color: #4f6b45;
-    font-size: 24px;
+    color: #12224a;
+    font-size: 1.3rem;
 }
 
 .step {
-    margin: 14px 0;
+    margin: 10px 0;
     padding: 12px 14px;
-    border-radius: 14px;
-    color: #5b6b55;
+    border-radius: 8px;
+    color: #5b6577;
 }
 
 .step.active {
-    background: #d98fa3;
-    color: white;
-    font-weight: bold;
+    background: #1d4fb8;
+    color: #ffffff;
+    font-weight: 600;
 }
 
+.form-content h2 {
+    margin-top: 0;
+    color: #12224a;
+    font-size: 1.7rem;
+}
+
+.form-content > p {
+    margin-bottom: 25px;
+    color: #5b6577;
+    line-height: 1.6;
+}
+
+/* ---------- Fieldsets ---------- */
 fieldset {
-    border: none;
-    background: #fdf4f6;
-    padding: 20px;
-    margin-bottom: 22px;
-    border-radius: 18px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e3e9f3;
+    background: #f7faff;
+    padding: 24px;
+    margin: 0 0 24px;
+    border-radius: 10px;
 }
 
 legend {
-    color: #5f7652;
-    font-weight: bold;
-    font-size: 18px;
-    padding: 0 8px;
+    padding: 0 10px;
+    font-family: inherit;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #1d4fb8;
+}
+
+/* ---------- Fields ---------- */
+label {
+    display: block;
+    margin-top: 12px;
+    font-family: inherit;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #1a1f2e;
 }
 
 input,
@@ -67,48 +93,24 @@ textarea {
     padding: 11px 13px;
     margin-top: 6px;
     margin-bottom: 14px;
-    border: 1px solid #d7d7d7;
-    border-radius: 12px;
+    border: 1px solid #d3dcea;
+    border-radius: 6px;
     box-sizing: border-box;
-    font-size: 15px;
+    font-family: inherit;
+    font-size: 0.95rem;
+    background: #ffffff;
+    color: #1a1f2e;
 }
 
 input:focus,
 select:focus,
 textarea:focus {
     outline: none;
-    border-color: #a8c98f;
-    box-shadow: 0 0 0 3px rgba(168, 201, 143, 0.25);
+    border-color: #1d4fb8;
+    box-shadow: 0 0 0 3px rgba(29, 79, 184, 0.15);
 }
 
-label {
-    display: block;
-    margin-top: 10px;
-    color: #5f7652;
-    font-weight: 600;
-}
-
-button,
-input[type="submit"],
-input[type="reset"] {
-    padding: 12px 20px;
-    border: none;
-    border-radius: 12px;
-    font-weight: bold;
-    cursor: pointer;
-    margin-right: 10px;
-}
-
-input[type="submit"] {
-    background: #a8c98f;
-    color: white;
-}
-
-input[type="reset"] {
-    background: #f6c7d3;
-    color: #7a3f50;
-}
-
+/* radios and checkboxes stay small and inline */
 input[type="radio"],
 input[type="checkbox"] {
     width: auto;
@@ -121,36 +123,7 @@ input[type="checkbox"] + label {
     display: inline;
     margin-top: 0;
     margin-right: 18px;
-}
-
-.form-content h2 {
-    color: #5f7652;
-    margin-top: 0;
-    font-size: 28px;
-}
-
-.form-content > p {
-    color: #7a6f73;
-    margin-bottom: 25px;
-    line-height: 1.6;
-}
-
-button[type="submit"] {
-    background: #8faa72;
-    color: white;
-}
-
-button[type="reset"] {
-    background: #d98fa3;
-    color: white;
-}
-
-button[type="submit"]:hover {
-    background: #78965d;
-}
-
-button[type="reset"]:hover {
-    background: #c9778f;
+    font-weight: 400;
 }
 
 #confirmation {
@@ -158,20 +131,54 @@ button[type="reset"]:hover {
 }
 
 #confirmation + label {
-    color: #7a3f50;
+    color: #12224a;
     font-weight: 600;
 }
 
-@media (max-width: 800px) {
-    .profile-layout {
-        flex-direction: column;
-    }
+/* ---------- Buttons ---------- */
+form button,
+form input[type="submit"],
+form input[type="reset"] {
+    padding: 12px 26px;
+    margin: 6px 10px 0 0;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
 
-    .form-sidebar {
-        width: auto;
-    }
+/* Submit: solid blue */
+form button[type="submit"],
+form input[type="submit"] {
+    background: #1d4fb8;
+    color: #ffffff;
+    border: 2px solid #1d4fb8;
+}
 
-    .form-content {
-        padding: 20px;
-    }
+form button[type="submit"]:hover,
+form input[type="submit"]:hover {
+    background: #12224a;
+    border-color: #12224a;
+}
+
+/* Clear: white with blue outline */
+form button[type="reset"],
+form
+
+
+/* Hide the review panel by default */
+#review-panel, .panel {
+    display: none;
+}
+
+/* Show it when the 'open' class is added by JavaScript */
+#review-panel.open,.panel.open {
+    display: block;
+}
+
+/* Hide the main form when reviewing */
+form.hidden {
+    display: none;
 }
