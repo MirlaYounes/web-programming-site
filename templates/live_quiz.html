@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+{% block title %}Quiz{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='quiz.css') }}" />
+{% endblock %}
+
+{% block nav %}{% endblock %}
+
+{% block content %}
+<main class="container">
+  <h1>Live Quiz</h1>
+ <p id="loading">Loading quiz...</p>
+  <p id="error" role="alert" hidden></p>
+  <section id="quizPanel">
+    <p id="progress"></p>
+    <h2 id="questionText"></h2>
+    <div id="choices"></div>
+
+    <div class="navigation">
+      <button id="firstBtn" onclick="goFirst()">First</button>
+      <button id="previousBtn" onclick="goPrevious()">Previous</button>
+      <button id="nextBtn" onclick="goNext()">Next</button>
+      <button id="lastBtn" onclick="goLast()">Last</button>
+    </div>
+
+    <button id="submitBtn" class="submit" onclick="submitQuiz()">Submit Quiz</button>
+  </section>
+
+  <section id="resultsPanel">
+    <h2>Quiz Results</h2>
+    <p id="scoreText"></p>
+    <p id="percentageText"></p>
+    <p id="performanceText"></p>
+    <h3>Correction</h3>
+    <pre id="correction"></pre>
+  </section>
+</main>
+
+<script src="{{ url_for('static', filename='live_quiz.js') }}"></script>
+
+<script>
+/* ---------- Submit button runs away until every question is answered ---------- */
+(function () {
+  const btn = document.getElementById("submitBtn");
+  if (!btn) return;
+
+  const answered = new Set();
+  document.addEventListener("change", (e) => {
+    if (e.target.matches('.choice input[type="radio"]')) {
+      const q = document.getElementById("questionText");
+      answered.add(q ? q.textContent.trim() : "q");
+    }
+  });
+
+  function totalQuestions() {
+    const p = document.getElementById("progress");
+    const m = p && p.textContent.match(/of\s+(\d+)/i);
+    return m ? parseInt(m[1], 10) : 5;
+  }
+
+  function quizComplete() {
+    return answered.size >= totalQuestions();
+  }
+
+  const RADIUS = 130;
+  const PUSH = 70;
+  let x = 0, y = 0;
+
+  const hint = document.createElement("p");
+  hint.textContent = "Answer all the questions first.";
+  hint.style.cssText = "display:none;margin:10px 0 0;color:#1d4fb8;font-weight:600;text-align:center;";
+  btn.insertAdjacentElement("afterend", hint);
+
+  function moveTo(nx, ny) {
+    x = nx; y = ny;
+    btn.style.translate = x + "px " + y + "px";
+  }
+
+  document.addEventListener("mousemove", (e) => {
+    if (quizComplete()) {
+      if (x || y) moveTo(0, 0);
+      hint.style.display = "none";
+      return;
+    }
+
+    const r = btn.getBoundingClientRect();
+    const dx = r.left + r.width / 2 - e.clientX;
+    const dy = r.top + r.height / 2 - e.clientY;
+    const dist = Math.hypot(dx, dy);
+    if (dist > RADIUS) return;
+
+    let mx = (dist ? dx / dist : 1) * PUSH;
+    let my = (dist ? dy / dist : 0) * PUSH;
+
+    if (r.left + mx < 8 || r.right + mx > window.innerWidth - 8) mx = -mx;
+    if (r.top + my < 8 || r.bottom + my > window.innerHeight - 8) my = -my;
+
+    moveTo(x + mx, y + my);
+  });
+
+  btn.addEventListener("click", (e) => {
+    if (!quizComplete()) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      hint.style.display = "block";
+    }
+  }, true);
+})();
+
+/* ---------- Answer cards move away from the cursor ---------- */
+document.addEventListener("mousemove", (e) => {
+  const RADIUS = 140, STRENGTH = 10;
+  document.querySelectorAll(".choice").forEach((card) => {
+    const rect = card.getBoundingClientRect();
+    const dx = rect.left + rect.width / 2 - e.clientX;
+    const dy = rect.top + rect.height / 2 - e.clientY;
+    const dist = Math.hypot(dx, dy);
+    if (dist < RADIUS && dist > 0) {
+      const force = (1 - dist / RADIUS) * STRENGTH;
+      card.style.setProperty("--push-x", (dx / dist) * force + "px");
+      card.style.setProperty("--push-y", (dy / dist) * force + "px");
+    } else {
+      card.style.setProperty("--push-x", "0px");
+      card.style.setProperty("--push-y", "0px");
+    }
+  });
+});
+</script>
+{% endblock %}
