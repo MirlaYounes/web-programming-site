@@ -231,6 +231,8 @@ function showResults(score, percentage, message, correction) {
     `Percentage: ${percentage}%`;
   document.getElementById("performanceText").textContent = message;
   document.getElementById("correction").textContent = correction;
+  // Move keyboard/screen-reader focus to the results
+  document.getElementById("resultsTitle").focus();
 }
 
 // ======================================================

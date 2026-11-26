@@ -8,13 +8,13 @@
 {% block nav %}{% endblock %}
 
 {% block content %}
-<main class="container">
+<article class="container">
   <h1>JavaScript Quiz</h1>
 
   <section id="quizPanel">
-    <p id="progress"></p>
+    <p id="progress" aria-live="polite"></p>
     <h2 id="questionText"></h2>
-    <div id="choices"></div>
+    <div id="choices" role="radiogroup" aria-labelledby="questionText"></div>
 
     <div class="navigation">
       <button id="firstBtn" onclick="goFirst()">First</button>
@@ -27,14 +27,14 @@
   </section>
 
   <section id="resultsPanel">
-    <h2>Quiz Results</h2>
+    <h2 id="resultsTitle" tabindex="-1">Quiz Results</h2>
     <p id="scoreText"></p>
     <p id="percentageText"></p>
-    <p id="performanceText"></p>
+    <p id="performanceText" role="alert"></p>
     <h3>Correction</h3>
     <pre id="correction"></pre>
   </section>
-</main>
+</article>
 
 <script src="{{ url_for('static', filename='quiz.js') }}"></script>
 
@@ -67,7 +67,7 @@
   let x = 0, y = 0;
 
   const hint = document.createElement("p");
-  hint.textContent = "Answer all the questions first.";
+  hint.setAttribute("role", "alert");
   hint.style.cssText = "display:none;margin:10px 0 0;color:#1d4fb8;font-weight:600;text-align:center;";
   btn.insertAdjacentElement("afterend", hint);
 
@@ -102,6 +102,7 @@
     if (!quizComplete()) {
       e.preventDefault();
       e.stopImmediatePropagation();
+      hint.textContent = "Answer all the questions first.";
       hint.style.display = "block";
     }
   }, true);
