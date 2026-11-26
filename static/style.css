@@ -18,6 +18,9 @@ body {
     line-height: 1.6;
 }
 
+/* Responsive images: never wider than their container */
+img { max-width: 100%; height: auto; }
+
 a { color: var(--blue); text-decoration: none; }
 a:hover { text-decoration: underline; }
 
@@ -77,7 +80,7 @@ header .subtitle {
     font-size: 2.6rem;
     line-height: 1.2;
     font-weight: 700;
-    color:#fff;s
+    color: #fff;
 }
 
 .hero p { max-width: 600px; }
@@ -125,9 +128,20 @@ input, select, textarea {
 }
 
 input:focus, select:focus, textarea:focus {
-    outline: none;
     border-color: var(--blue);
     box-shadow: 0 0 0 3px var(--light);
+}
+
+/* Visible keyboard focus on every link, button and input */
+:focus-visible {
+    outline: 3px solid var(--blue);
+    outline-offset: 2px;
+}
+
+/* White outline on blue backgrounds so it stays visible */
+.hero :focus-visible,
+footer :focus-visible {
+    outline-color: #fff;
 }
 
 main button {
@@ -142,6 +156,12 @@ main button {
 }
 
 main button:hover { background: var(--blue-dark); }
+
+main button:disabled {
+    background: var(--muted);
+    cursor: not-allowed;
+    opacity: 0.7;
+}
 
 /* ---------- Home: weekly work ---------- */
 .home-section {
@@ -172,7 +192,7 @@ main button:hover { background: var(--blue-dark); }
 
 .cards {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
     gap: 0;
     box-shadow: 0 10px 40px rgba(18, 34, 74, 0.12);
     border-radius: 6px;
@@ -257,11 +277,12 @@ footer p {
     padding: 70px 20px 20px;
     background: #fff;
     box-shadow: 4px 0 20px rgba(18, 34, 74, 0.12);
-    transition: left 0.3s;
+    visibility: hidden;
+    transition: left 0.3s, visibility 0.3s;
     z-index: 1000;
 }
 
-#sidebar.open { left: 0; }
+#sidebar.open { left: 0; visibility: visible; }
 
 #sidebar ul { list-style: none; margin: 0; padding: 0; }
 #sidebar li { margin-bottom: 6px; }
@@ -278,4 +299,20 @@ footer p {
     background: var(--light);
     color: var(--blue);
     text-decoration: none;
+}
+
+/* ---------- Skip link (hidden until focused with Tab) ---------- */
+.skip-link {
+    position: absolute;
+    left: -9999px;
+    top: 0;
+}
+
+.skip-link:focus {
+    left: 1rem;
+    top: 1rem;
+    background: #fff;
+    color: #1a3fa8;
+    padding: 0.5rem 1rem;
+    z-index: 1002;
 }

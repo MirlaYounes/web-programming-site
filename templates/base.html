@@ -1,66 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta name="description" content="A live site that grows one page or feature every week.">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💻</text></svg>">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A live site that grows one page or feature every week.">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💻</text></svg>">
 
     <title>{% block title %}My Web Programming Portfolio{% endblock %}</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet"
-          href="{{ url_for('static', filename='style.css') }}">
-          {% block head %}{% endblock %}
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    {% block head %}{% endblock %}
 </head>
 
 <body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
 
-       <header>
-    {% block nav %}
-    <button id="menu-toggle" aria-label="Toggle menu">☰ Menu</button>
+    <header>
+        {% block nav %}
+        <button id="menu-toggle" aria-label="Toggle menu"
+                aria-expanded="false" aria-controls="sidebar">☰ Menu</button>
 
-    <aside id="sidebar">
-        <ul>
-            <li><a href="/">Home</a></li>
-            {% set pages = [
-                ('internet_history', 'Internet History'),
-                ('web_history', 'Web History'),
-                ('internet_history_ai', 'Internet History (AI)'),
-                ('web_history_ai', 'Web History (AI)')
-            ] %}
-            {% for endpoint, label in pages %}
-                {% if request.endpoint != endpoint %}
-                <li><a href="{{ url_for(endpoint) }}">{{ label }}</a></li>
-                {% endif %}
-            {% endfor %}
-        </ul>
-    </aside>
+        <nav id="sidebar" aria-label="Main menu">
+            <ul>
+                <li><a href="/">Home</a></li>
+                {% set pages = [
+                    ('internet_history', 'Internet History'),
+                    ('web_history', 'Web History'),
+                    ('internet_history_ai', 'Internet History (AI)'),
+                    ('web_history_ai', 'Web History (AI)')
+                ] %}
+                {% for endpoint, label in pages %}
+                    {% if request.endpoint != endpoint %}
+                    <li><a href="{{ url_for(endpoint) }}">{{ label }}</a></li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </nav>
 
-    <script>
-        document.getElementById("menu-toggle").addEventListener("click", function () {
-            document.getElementById("sidebar").classList.toggle("open");
-        });
-    </script>
-    {% endblock %}
-
-    <h1>Web Programming Portfolio — Mirla Tatiana Younes</h1>
-    <p>A live site that grows one page or feature every week.</p>
-</header>
-{% block hero %}{% endblock %}
-    <main>
-        {% block content %}
+        <script>
+            const toggle = document.getElementById("menu-toggle");
+            const sidebar = document.getElementById("sidebar");
+            toggle.addEventListener("click", function () {
+                const isOpen = sidebar.classList.toggle("open");
+                toggle.setAttribute("aria-expanded", isOpen);
+            });
+        </script>
         {% endblock %}
+
+        <h1>Web Programming Portfolio — Mirla Tatiana Younes</h1>
+        <p>A live site that grows one page or feature every week.</p>
+    </header>
+
+    {% block hero %}{% endblock %}
+
+    <main id="main-content">
+        {% block content %}{% endblock %}
     </main>
 
     <footer>
         <p>Web Programming — built with Flask and deployed on Render.</p>
-
         <p>
             This website is created for educational purposes only,
             as part of the GIN446 - Web Programming course,
             School of Engineering, USEK. (Fall 2026-2027)
         </p>
     </footer>
-
 </body>
 </html>
