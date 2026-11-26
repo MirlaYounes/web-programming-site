@@ -1,0 +1,77 @@
+
+{% extends "base.html" %}
+
+{% block title %}{{ data.get('fullname', 'Student Profile') }} — Validated Profile{% endblock %}
+
+{% block content %}
+
+<h1>{{ data.get('fullname', 'Student Profile') }}</h1>
+
+{% if data.get('major') %}
+<p>{{ data.get('major') }}</p>
+{% endif %}
+
+<h2>Personal Information</h2>
+
+<p><strong>Student ID:</strong> {{ data.get('student_id') }}</p>
+<p><strong>Email:</strong> {{ data.get('email') }}</p>
+<p><strong>Phone:</strong> {{ data.get('phone') }}</p>
+<p><strong>Birthdate:</strong> {{ data.get('birthdate') }}</p>
+<p><strong>GitHub:</strong> {{ data.get('portfolio') }}</p>
+<p><strong>GIN446 Website:</strong> {{ data.get('gin446') }}</p>
+
+<h2>Academic Information</h2>
+
+<p><strong>Major:</strong> {{ data.get('major') }}</p>
+<p><strong>GPA:</strong> {{ data.get('gpa') }} / 100</p>
+<p><strong>Credits:</strong> {{ data.get('credits') }} / 148</p>
+<p><strong>Expected Graduation:</strong> {{ data.get('graduation') }}</p>
+<p><strong>Graduation Month:</strong> {{ data.get('graduation_month') }}</p>
+<p><strong>Internship Completed:</strong> {{ data.get('internship_completed') }}</p>
+
+<h2>Technical Background</h2>
+
+<p><strong>Primary Programming Language:</strong> {{ data.get('language') }}</p>
+
+<p><strong>Skills:</strong></p>
+{% if skills %}
+<ul>
+    {% for skill in skills %}
+    <li>{{ skill }}</li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>No skills selected.</p>
+{% endif %}
+
+<p><strong>Engineering Software:</strong></p>
+{% if software %}
+<ul>
+    {% for sw in software %}
+    <li>{{ sw }}</li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>No software selected.</p>
+{% endif %}
+
+<h2>Final Year Project</h2>
+
+<p><strong>Project Title:</strong> {{ data.get('project_title') }}</p>
+<p><strong>Project Area:</strong> {{ data.get('project_area') }}</p>
+<p><strong>Description:</strong> {{ data.get('description') }}</p>
+<p><strong>Preferred Team Size:</strong> {{ data.get('team_size') }}</p>
+<p><strong>Dashboard Color:</strong>
+    <span style="color: {{ data.get('project_color', '#336699') }}">
+        {{ data.get('project_color', '#336699') }}
+    </span>
+</p>
+
+<p><strong>Meeting Date:</strong> {{ data.get('meeting_date') }}</p>
+<p><strong>Meeting Time:</strong> {{ data.get('meeting_time') }}</p>
+
+<p><strong>Form Version:</strong> {{ data.get('form_version') }}</p>
+
+<h2>Profile Successfully Validated!</h2>
+
+{% endblock %}

@@ -28,30 +28,14 @@
     <p class="lead">Each week of the course adds something new to this site.</p>
 
     <div class="cards">
-        <a class="card" href="{{ url_for('internet_history') }}">
-            <span class="icon">🌐</span>
-            <div><h3>Week 2 — History of the Internet</h3><p>How the internet began and grew.</p></div>
-        </a>
-        <a class="card" href="{{ url_for('web_history') }}">
-            <span class="icon">🕸️</span>
-            <div><h3>Week 2 — History of the Web</h3><p>From the first website to today.</p></div>
-        </a>
-        <a class="card" href="{{ url_for('internet_history_ai') }}">
-            <span class="icon">🤖</span>
-            <div><h3>Week 2 — History of the Internet (AI)</h3><p>The same topic, written with AI.</p></div>
-        </a>
-        <a class="card" href="{{ url_for('web_history_ai') }}">
-            <span class="icon">💡</span>
-            <div><h3>Week 2 — History of the Web (AI)</h3><p>The web's story, written with AI.</p></div>
-        </a>
-        <a class="card" href="/submit-profile">
-            <span class="icon">📝</span>
-            <div><h3>Week 4 — Engineering Student Profile</h3><p>A form that collects student details.</p></div>
-        </a>
-        <a class="card" href="/quiz">
-            <span class="icon">⚡</span>
-            <div><h3>Week 5 — JavaScript App</h3><p>An interactive quiz built with JavaScript.</p></div>
-        </a>
-    </div>
+    {% for w in weekly_work %}
+    <a class="card" href="{{ w.url }}">
+        <span class="icon">{{ w.get('icon', '📄') }}</span>
+        <div>
+            <h3>Week {{ w.week }} — {{ w.title }}</h3>
+            <p>{{ w.get('description', '') }}</p>
+        </div>
+    </a>
+    {% endfor %}
 </div>
 {% endblock %}
